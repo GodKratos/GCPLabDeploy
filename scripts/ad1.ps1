@@ -3,6 +3,9 @@ param
 (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
+    [string] $Hostname,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
     [string] $Domain,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
@@ -39,18 +42,19 @@ Configuration ConfigureServer_Config
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]
+        $Hostname,
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]
         $Domain,
-
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         $LocalCredential,
-
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         $SafeModePassword,
-
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
@@ -59,6 +63,7 @@ Configuration ConfigureServer_Config
 
     Import-DscResource -ModuleName PsDscResources
     Import-DscResource -ModuleName ActiveDirectoryDsc
+    Import-DscResource -ModuleName ComputerManagementDsc
 
     node 'localhost'
     {
@@ -82,6 +87,11 @@ Configuration ConfigureServer_Config
             Name                 = 'RSAT-AD-Tools'
             Ensure               = 'Present'
             IncludeAllSubFeature = $true
+        }
+
+        Computer 'RenameHost'
+        {
+            Name = $Hostname
         }
 
         ADDomain 'DCLab'
@@ -153,7 +163,7 @@ $domainCred = New-Object System.Management.Automation.PSCredential($username,$pa
 
 # Create Dsc Configurations
 LCMConfig
-ConfigureServer_Config -Domain $Domain -LocalCredential $cred -SafeModePassword $cred -DomainCredential $domainCred -ConfigurationData $ConfigData
+ConfigureServer_Config -Hostname $Hostname -Domain $Domain -LocalCredential $cred -SafeModePassword $cred -DomainCredential $domainCred -ConfigurationData $ConfigData
 
 # Configure LCM
 Set-DscLocalConfigurationManager -path .\LCMConfig -verbose -force

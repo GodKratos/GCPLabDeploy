@@ -3,6 +3,9 @@ param
 (
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
+    [string] $Hostname,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
     [string] $Domain,
     [Parameter(Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
@@ -39,18 +42,19 @@ Configuration ConfigureServer_Config
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]
+        $Hostname,
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]
         $Domain,
-
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         $LocalCredential,
-
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         $SafeModePassword,
-
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
@@ -90,7 +94,15 @@ Configuration ConfigureServer_Config
             Credential  = $DomainCredential
             WaitTimeout = 1800
             DependsOn   = '[WindowsFeature]ADDS'
-        } 
+        }
+
+        Computer 'JoinDomain'
+        {
+            Name       = $Hostname
+            #DomainName = $Domain
+            #Credential = $DomainCredential
+            #Server     = '10.30.1.11'
+        }
 
         ADDomainController 'DCLab'
         {
@@ -128,7 +140,7 @@ $domainCred = New-Object System.Management.Automation.PSCredential($username,$pa
 
 # Create Dsc Configurations
 LCMConfig
-ConfigureServer_Config -Domain $Domain -LocalCredential $cred -SafeModePassword $cred -DomainCredential $domainCred -ConfigurationData $ConfigData
+ConfigureServer_Config -Hostname $Hostname -Domain $Domain -LocalCredential $cred -SafeModePassword $cred -DomainCredential $domainCred -ConfigurationData $ConfigData
 
 # Configure LCM
 Set-DscLocalConfigurationManager -path .\LCMConfig -verbose -force

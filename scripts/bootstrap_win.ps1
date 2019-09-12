@@ -55,3 +55,4 @@ Start-Service -Name WinRM
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name ActiveDirectoryDsc -Force
 Install-Module -Name PsDscResources -Force
+Install-Module -Name ComputerManagementDsc -Force
