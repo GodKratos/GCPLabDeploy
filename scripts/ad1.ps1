@@ -49,7 +49,7 @@ Configuration ConfigureServer_Config
     node 'localhost'
     {
 
-        LocalConfigurationManager            
+        Settings            
         {            
             ActionAfterReboot = 'ContinueConfiguration'            
             ConfigurationMode = 'ApplyOnly'            
