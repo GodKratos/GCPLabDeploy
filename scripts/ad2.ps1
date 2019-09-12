@@ -18,11 +18,6 @@ param
     [string] $DomainPassword
 )
 
-# Install DSC modules required
-Install-PackageProvider -Name NuGet -Force
-Install-Module -Name ActiveDirectoryDsc -Force
-Install-Module -Name PsDscResources -Force
-
 Configuration ConfigureServer_Config
 {
     param

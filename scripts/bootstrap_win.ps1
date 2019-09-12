@@ -50,3 +50,8 @@ netsh advfirewall firewall add rule name="Windows Remote Management (HTTPS-In)" 
 
 # Start the WinRM service
 Start-Service -Name WinRM
+
+# Install DSC modules required
+Install-PackageProvider -Name NuGet -Force
+Install-Module -Name ActiveDirectoryDsc -Force
+Install-Module -Name PsDscResources -Force
