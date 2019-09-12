@@ -1,0 +1,23 @@
+{
+  "builders": [
+    {
+      "image_name": "dclab-windows-2019",
+      "type": "googlecompute",
+      "project_id": "datacom-operations-two",
+      "source_image_family": "windows-2019",
+      "disk_size": "50",
+      "machine_type": "n1-standard-1",
+      "communicator": "winrm",
+      "winrm_username": "dclablocaladmin",
+      "winrm_password": "Ttp2u33x0QnWyu",
+      "winrm_port": 21002,
+      "winrm_insecure": true,
+      "winrm_use_ssl": true,
+      "winrm_use_ntlm": true,
+      "metadata": {
+        "windows-startup-script-cmd": "PowerShell -NoProfile -ExecutionPolicy Bypass -Command \"Invoke-Command -ScriptBlock ([scriptblock]::Create(((New-Object System.Net.WebClient).DownloadString('https://storage.googleapis.com/terraform-state-bucket/scripts/bootstrap_win.ps1')))) -ArgumentList dclablocaladmin,Ttp2u33x0QnWyu,21002\""
+      },
+      "zone": "us-central1-c"
+    }
+  ]
+}

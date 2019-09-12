@@ -1,0 +1,12 @@
+{
+  "builders": [
+    {
+      "image_name": "test-windows-2019",
+      "type": "googlecompute",
+      "project_id": "datacom-operations-two",
+      "source_image_family": "debian-10",
+      "ssh_username": "packer",
+      "zone": "us-central1-c"
+    }
+  ]
+}
