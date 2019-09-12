@@ -6,6 +6,7 @@
       "project_id": "datacom-operations-two",
       "source_image_family": "windows-2019",
       "disk_size": "50",
+      "state_timeout": "10m",
       "machine_type": "n1-standard-1",
       "communicator": "winrm",
       "winrm_username": "dclablocaladmin",
@@ -15,7 +16,7 @@
       "winrm_use_ssl": true,
       "winrm_use_ntlm": true,
       "metadata": {
-        "windows-startup-script-cmd": "PowerShell -NoProfile -ExecutionPolicy Bypass -Command \"Invoke-Command -ScriptBlock ([scriptblock]::Create(((New-Object System.Net.WebClient).DownloadString('https://storage.googleapis.com/terraform-state-bucket/scripts/bootstrap_win.ps1')))) -ArgumentList dclablocaladmin,Ttp2u33x0QnWyu,21002\""
+        "windows-startup-script-cmd": "PowerShell -NoProfile -ExecutionPolicy Bypass -Command \"Invoke-Command -ScriptBlock ([scriptblock]::Create(((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/GodKratos/GCPLabDeploy/master/scripts/bootstrap_win.ps1')))) -ArgumentList dclablocaladmin,Ttp2u33x0QnWyu,21002\""
       },
       "zone": "us-central1-c"
     }

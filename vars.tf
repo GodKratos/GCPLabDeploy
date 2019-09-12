@@ -22,10 +22,6 @@ variable "var_network_subnet" {
   default = "10.30.1.0/24"
 }
 
-variable "var_network_prefix" {
-  default = "10.30.1."
-}
-
 variable "var_network_ip" {
   type = "map"
   default = {
