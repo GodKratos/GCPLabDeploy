@@ -146,7 +146,7 @@ $username = $DomainUsername
 $domainCred = New-Object System.Management.Automation.PSCredential($username,$password)
 
 # Create Dsc Configuration
-ConfigureServer_Config -Domain $Domain -Credential $cred -SafeModePassword $cred -NewDomainUser $domainCred -ConfigurationData $ConfigData
+ConfigureServer_Config -Domain $Domain -LocalCredential $cred -SafeModePassword $cred -DomainCredential $domainCred -ConfigurationData $ConfigData
 
 # Initiate Dsc Configuration
 Start-DscConfiguration -path .\ConfigureServer_Config -wait -verbose -force
