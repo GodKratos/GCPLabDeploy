@@ -18,6 +18,20 @@ param
     [string] $DomainPassword
 )
 
+[DSCLocalConfigurationManager()]
+configuration LCMConfig
+{
+    Node localhost
+    {
+        Settings
+        {
+            ActionAfterReboot = 'ContinueConfiguration'            
+            ConfigurationMode = 'ApplyOnly'            
+            RebootNodeIfNeeded = $true            
+        }
+    }
+}
+
 Configuration ConfigureServer_Config
 {
     param
@@ -48,14 +62,6 @@ Configuration ConfigureServer_Config
 
     node 'localhost'
     {
-
-        Settings            
-        {            
-            ActionAfterReboot = 'ContinueConfiguration'            
-            ConfigurationMode = 'ApplyOnly'            
-            RebootNodeIfNeeded = $true            
-        }
-
         WindowsFeature DNS
         {
             Ensure = 'Present'
@@ -120,8 +126,12 @@ $password = $DomainPassword | ConvertTo-SecureString -AsPlainText -Force
 $username = $DomainUsername
 $domainCred = New-Object System.Management.Automation.PSCredential($username,$password)
 
-# Create Dsc Configuration
+# Create Dsc Configurations
+LCMConfig
 ConfigureServer_Config -Domain $Domain -LocalCredential $cred -SafeModePassword $cred -DomainCredential $domainCred -ConfigurationData $ConfigData
+
+# Configure LCM
+Set-DscLocalConfigurationManager -path .\LCMConfig -verbose -force
 
 # Initiate Dsc Configuration
 Start-DscConfiguration -path .\ConfigureServer_Config -wait -verbose -force
