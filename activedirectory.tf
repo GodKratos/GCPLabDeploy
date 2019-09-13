@@ -1,8 +1,9 @@
 # Create a Google Compute instance
 resource "google_compute_instance" "ad_server" {
   for_each = {
-    ad1 = "${var.var_network_ip["ad1"]}"
-    ad2 = "${var.var_network_ip["ad2"]}"
+    ad1     = "${var.var_network_ip["ad1"]}"
+    ad2     = "${var.var_network_ip["ad2"]}"
+    member1 = "${var.var_network_ip["member1"]}"
   }
 
   name         = "${var.var_prefix}-${terraform.workspace}-${each.key}"

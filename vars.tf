@@ -25,8 +25,9 @@ variable "var_network_subnet" {
 variable "var_network_ip" {
   type = "map"
   default = {
-    ad1 = "10.30.1.11"
-    ad2 = "10.30.1.12"
+    ad1     = "10.30.1.11"
+    ad2     = "10.30.1.12"
+    member1 = "10.30.1.21"
   }
 }
 
