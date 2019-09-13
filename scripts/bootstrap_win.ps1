@@ -48,11 +48,11 @@ Set-Service -Name WinRM -StartupType Automatic
 netsh advfirewall firewall add rule name="Windows Remote Management (HTTP-In)" dir=in action=allow protocol=TCP localport=$winrmHttpPort
 netsh advfirewall firewall add rule name="Windows Remote Management (HTTPS-In)" dir=in action=allow protocol=TCP localport=$winrmHttpsPort
 
-# Start the WinRM service
-Start-Service -Name WinRM
-
 # Install DSC modules required
 Install-PackageProvider -Name NuGet -Force
 Install-Module -Name ActiveDirectoryDsc -Force
 Install-Module -Name PsDscResources -Force
 Install-Module -Name ComputerManagementDsc -Force
+
+# Start the WinRM service last so builds proceed
+Start-Service -Name WinRM
