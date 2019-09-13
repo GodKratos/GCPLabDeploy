@@ -72,17 +72,27 @@ Configuration ConfigureServer_Config
             Ensure = 'Present'
             Name   = 'DNS'
         }
+        WindowsFeature DNSTools
+        {
+            Ensure = 'Present'
+            Name   = 'RSAT-DNS-Server'
+        }
         WindowsFeature DHCP
         {
             Ensure = 'Present'
             Name   = 'DHCP'
+        }
+        WindowsFeature DHCPTools
+        {
+            Ensure = 'Present'
+            Name   = 'RSAT-DHCP'
         }
         WindowsFeature 'ADDS'
         {
             Name   = 'AD-Domain-Services'
             Ensure = 'Present'
         }
-        WindowsFeature 'RSAT'
+        WindowsFeature 'ADDSTools'
         {
             Name                 = 'RSAT-AD-Tools'
             Ensure               = 'Present'
@@ -111,6 +121,7 @@ Configuration ConfigureServer_Config
             UserName              = $DomainCredential.UserName
             Password              = $DomainCredential
             DomainName            = $Domain
+            UserPrincipalName     = "$($DomainCredential.UserName)@$($Domain)"
             PasswordNeverResets   = $true
             PasswordNeverExpires  = $true
             ChangePasswordAtLogon = $false
@@ -164,4 +175,4 @@ ConfigureServer_Config -Domain $Domain -LocalCredential $cred -SafeModePassword 
 Set-DscLocalConfigurationManager -path .\LCMConfig -verbose -force
 
 # Initiate Dsc Configuration
-Start-DscConfiguration -path .\ConfigureServer_Config -wait -verbose -force
+Start-DscConfiguration -path .\ConfigureServer_Config -verbose -force -wait

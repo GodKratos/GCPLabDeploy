@@ -72,17 +72,27 @@ Configuration ConfigureServer_Config
             Ensure = 'Present'
             Name   = 'DNS'
         }
+        WindowsFeature DNSTools
+        {
+            Ensure = 'Present'
+            Name   = 'RSAT-DNS-Server'
+        }
         WindowsFeature DHCP
         {
             Ensure = 'Present'
             Name   = 'DHCP'
+        }
+        WindowsFeature DHCPTools
+        {
+            Ensure = 'Present'
+            Name   = 'RSAT-DHCP'
         }
         WindowsFeature 'ADDS'
         {
             Name   = 'AD-Domain-Services'
             Ensure = 'Present'
         }
-        WindowsFeature 'RSAT'
+        WindowsFeature 'ADDSTools'
         {
             Name                 = 'RSAT-AD-Tools'
             Ensure               = 'Present'
@@ -128,7 +138,7 @@ $cred = New-Object System.Management.Automation.PSCredential($username,$password
 
 # Create credential object for new domain user
 $password = $DomainPassword | ConvertTo-SecureString -AsPlainText -Force
-$username = $DomainUsername
+$username = "$($DomainUsername)@$($Domain)"
 $domainCred = New-Object System.Management.Automation.PSCredential($username,$password)
 
 # Create Dsc Configurations
@@ -139,4 +149,4 @@ ConfigureServer_Config -Domain $Domain -LocalCredential $cred -SafeModePassword 
 Set-DscLocalConfigurationManager -path .\LCMConfig -verbose -force
 
 # Initiate Dsc Configuration
-Start-DscConfiguration -path .\ConfigureServer_Config -wait -verbose -force
+Start-DscConfiguration -path .\ConfigureServer_Config -verbose -force -wait
