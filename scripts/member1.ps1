@@ -56,6 +56,7 @@ Configuration ConfigureServer_Config
 
     Import-DscResource -ModuleName PsDscResources
     Import-DscResource -Module ComputerManagementDsc
+    Import-DscResource -ModuleName ActiveDirectoryDsc
     Import-DscResource -Module NetworkingDsc
 
     node 'localhost'
