@@ -73,7 +73,6 @@ Configuration ConfigureServer_Config
             DomainName  = $Domain
             Credential  = $DomainCredential
             WaitTimeout = 3600
-            DependsOn   = '[WindowsFeature]ADDS'
         }
 
         Computer 'JoinDomain'

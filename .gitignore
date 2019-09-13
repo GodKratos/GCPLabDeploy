@@ -8,5 +8,8 @@
 # .tfvars files
 *.tfvars
 
+# terraform log file
+terraform.log
+
 #  Local .vagrant directories
 **/.vagrant/*
