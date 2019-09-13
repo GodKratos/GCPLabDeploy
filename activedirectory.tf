@@ -11,7 +11,7 @@ resource "google_compute_instance" "ad_server" {
 
   boot_disk {
     initialize_params {
-      image = "dclab-windows-2019"
+      image = "windows-2019"
     }
   }
 
@@ -27,9 +27,9 @@ resource "google_compute_instance" "ad_server" {
   tags   = ["rdp", "winrm", "${terraform.workspace}-net"]
   labels = { env = "${terraform.workspace}", role = "activedirectory", shutdown = "enabled" }
 
-  # metadata = {
-  #   windows-startup-script-cmd = "PowerShell -NoProfile -ExecutionPolicy Bypass -Command \"Invoke-Command -ScriptBlock ([scriptblock]::Create(((New-Object System.Net.WebClient).DownloadString('https://storage.googleapis.com/terraform-state-bucket/scripts/bootstrap_win.ps1')))) -ArgumentList ${var.local_admin_user},${var.local_admin_password},${var.var_ports["winrmhttps"]}\""
-  # }
+  metadata = {
+    windows-startup-script-cmd = "PowerShell -NoProfile -ExecutionPolicy Bypass -Command \"Invoke-Command -ScriptBlock ([scriptblock]::Create(((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/GodKratos/GCPLabDeploy/master/scripts/bootstrap_win.ps1')))) -ArgumentList ${var.local_admin_user},${var.local_admin_password},${var.var_ports["winrmhttps"]}\""
+  }
 
   # validate build has completed and server is up before continuing
   provisioner "remote-exec" {
@@ -42,11 +42,12 @@ resource "google_compute_instance" "ad_server" {
       password = "${var.local_admin_password}"
       https    = "true"
       insecure = "true"
+      timeout  = "10m"
     }
 
     inline = [
       # Run a powershell script based on the server name ${each.key}
-      "PowerShell -NoProfile -ExecutionPolicy Bypass -Command \"Invoke-Command -ScriptBlock ([scriptblock]::Create(((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/GodKratos/GCPLabDeploy/master/scripts/${each.key}.ps1')))) -ArgumentList ${each.key},${var.ad_server_domain},${var.local_admin_user},${var.local_admin_password},${var.ad_server_user},${var.ad_server_password}\""
+      "PowerShell -NoProfile -ExecutionPolicy Bypass -Command \"Invoke-Command -ScriptBlock ([scriptblock]::Create(((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/GodKratos/GCPLabDeploy/master/scripts/${each.key}.ps1')))) -ArgumentList ${var.ad_server_domain},${var.local_admin_user},${var.local_admin_password},${var.ad_server_user},${var.ad_server_password}\""
     ]
 
     # continue if winrm fails to connect

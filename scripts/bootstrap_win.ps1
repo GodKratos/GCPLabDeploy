@@ -53,6 +53,7 @@ Install-PackageProvider -Name NuGet -Force
 Install-Module -Name ActiveDirectoryDsc -Force
 Install-Module -Name PsDscResources -Force
 Install-Module -Name ComputerManagementDsc -Force
+Install-Module -Name NetworkingDsc -Force
 
 # Start the WinRM service last so builds proceed
 Start-Service -Name WinRM
