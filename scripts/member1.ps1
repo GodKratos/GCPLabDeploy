@@ -92,6 +92,7 @@ $ConfigData= @{
             # The name of the node we are describing
             NodeName = "localhost"
             PSDscAllowPlainTextPassword = $true
+            PSDscAllowDomainUser = $true
         };
     );
 }
