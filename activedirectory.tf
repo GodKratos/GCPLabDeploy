@@ -4,6 +4,7 @@ resource "google_compute_instance" "ad_server" {
     ad1     = "${var.var_network_ip["ad1"]}"
     ad2     = "${var.var_network_ip["ad2"]}"
     member1 = "${var.var_network_ip["member1"]}"
+    member2 = "${var.var_network_ip["member2"]}"
   }
 
   name         = "${var.var_prefix}-${terraform.workspace}-${each.key}"

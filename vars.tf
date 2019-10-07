@@ -28,6 +28,7 @@ variable "var_network_ip" {
     ad1     = "10.30.1.11"
     ad2     = "10.30.1.12"
     member1 = "10.30.1.21"
+    member2 = "10.30.1.22"
   }
 }
 
