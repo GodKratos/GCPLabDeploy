@@ -1,0 +1,28 @@
+---
+# Inventory file for Bolt Hands-on Lab
+groups:
+  - name: linux
+    nodes:
+    - name: 35.188.110.177
+      alias: node1
+    - name: 34.69.83.150
+      alias: node2
+    - name: 34.68.106.211
+      alias: node3
+  - name: windows
+    nodes:
+    - name: 35.209.109.24
+      alias: win1
+    config:
+      transport: winrm
+config:
+  ssh:
+    user: adminuser
+    private-key: /Data/Terraform/adminuser_rsakey
+    host-key-check: false
+  winrm:
+    user: dclablocaladmin
+    password: Ttp2u33x0QnWyu
+    ssl: true
+    port: 21002
+    ssl-verify: false
